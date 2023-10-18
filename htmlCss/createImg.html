@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button>DogImg</button>
+</body>
+</html>
+
+<script>
+document.querySelector("button").addEventListener("click",myFun)
+
+
+function myFun(){
+    let photo = document.createElement("img");
+ photo.setAttribute("src","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQC7-6tj21uTEzoARfEHjW9LoYnjY6FFEDmQw&usqp=CAU");
+ document.querySelector("body").append(photo);
+}
+
+</script>
