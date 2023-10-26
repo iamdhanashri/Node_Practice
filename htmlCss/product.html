@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <style>
+        #container{
+            height: auto;
+            width: 100%;
+            /* border: 1px solid blue; */
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            grid-template-rows: (auto);
+            grid-gap: 20px;
+        }
+        #container>div{
+            /* height: auto; */
+            text-align: center;
+            /* width: 22%; */
+            /* border: 1px solid red; */
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        }
+        #container>div>img{
+           width: 100%; 
+        }
+
+
+     #serchInput{
+        margin: 30px 0px 30px 30px;
+        height: 30px;
+        width: 200px;
+        padding-left: 20px;
+     }
+     </style>
+</head>
+<body>
+    
+    <button> <a href="cart.html">Cart</a> </button>
+
+    <input oninput="serchProd()" id="serchInput" type="text" placeholder="search products here">
+    <div id="container"></div>
+    <!-- <button></button> -->
+</body>
+</html>
+<script>
+    let bag = [];
+    let url="https://fakestoreapi.com/products"
+    fetch(url)
+    .then((res)=>res.json())
+    .then((data)=>{
+        bag = data
+        displayCard(data)})
+     .catch((err)=>alert(err))
+       
+
+    function displayCard(data){
+    document.querySelector("#container").innerHTML="";
+    data.forEach((ele) => {
+     
+        let div=document.createElement("div")
+
+        let img=document.createElement("img")
+        img.setAttribute("src",ele.image)
+
+        let titl=document.createElement("h2")
+        titl.innerText=ele.title
+         
+        let pri=document.createElement("p")
+        pri.innerText=ele.price
+ 
+        let desc=document.createElement("p")
+        desc.innerText=ele.description
+ 
+        let ratee=document.createElement("p")
+        ratee.innerText=ele.rating.rate
+
+       let btn=document.createElement("button")
+        btn.innerText="Add to cart"
+
+        div.append(img,titl,pri,desc,ratee,btn)
+
+        document.querySelector("#container").append(div)
+
+    });
+    }
+
+    function serchProd(){
+       let q = document.querySelector("#serchInput").value;
+
+       let prod = bag.filter(function(ele){
+        return ele.title.toLowerCase().includes(q.toLowerCase() )
+
+       })
+       displayCard(prod)
+    }
+</script>

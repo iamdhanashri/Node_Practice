@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+ <style>
+#container {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-template-rows: auto;
+    gap:20px;
+    margin-top: 50px;
+}
+#container>div>img{
+width: 100%;
+height: 200px;
+}
+
+#container>div{
+text-align: center;
+box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+#searchBox{
+    height: 30px;
+    width:200px;
+    margin: 30px 0px 0px 20px;
+    padding: 10px 20px;
+}
+ </style>   
+</head>
+
+
+<body>
+
+    <button><a href="cartFetch1.html">Cart</a></button>
+   <input oninput="search()" id = searchBox type="text" placeholder="search the products here">
+   <select onChange="handlesort()">
+    <option value="LTH">LTH</option>
+    <option value="HTL">HTL</option>
+   </select>
+    <div id="container"></div>
+</body>
+
+</html>
+<script>
+  
+    let bag=[];
+    let url = "https://fakestoreapi.com/products";
+    fetch(url)
+    .then((res)=>res.json())
+    .then((data)=>{
+        bag = data;
+        console.log(data);
+        displayCard(data);
+    })
+    .catch((err)=>alert(err))
+
+    function handlesort(){
+        let selected = document.querySelector("select").value;
+        if(selected == "LTH"){
+        bag.sort((a,b)=>
+            a.price-b.price
+          )
+        }
+        if(selected == "HTL"){
+        bag.sort((a,b)=>
+            b.price-a.price
+          )
+        }   
+          
+        displayCard(bag)
+    }
+
+    function search(){
+      let w= document.querySelector("input").value; 
+    //   console.log(w)
+     let newData=bag.filter(function(ele){
+     return ele.title.toLowerCase().includes(w.toLowerCase())
+     });
+     displayCard(newData)
+    }
+
+
+    function displayCard(data){
+        let cartItem=JSON.parse(localStorage.getItem("cartProd")) || [];
+        document.querySelector("#container").innerHTML="";
+         data.forEach((ele) => {
+            
+            let div = document.createElement("div");
+              let img = document.createElement("img")
+              img.setAttribute("src",ele.image);
+
+               let titl = document.createElement("h1")
+              titl.innerText = ele.title      
+
+              let prices = document.createElement("h3")
+                     prices.innerText = ele.price;
+
+              let rate = document.createElement("h2");
+                  rate.innerText = ele.rating.rate;
+
+              let desc = document.createElement("p")
+                  desc.innerText = ele.description;
+
+             let btn = document.createElement("button")
+              btn.innerText ="Add to Cart";
+              btn.addEventListener("click",function(){
+                cartItem.push(ele)
+                localStorage.setItem("cartProd",JSON.stringify(cartItem))
+              })
+
+              div.append(img,titl,prices ,rate,desc,btn);
+
+              document.querySelector("#container");
+
+              container.append(div)
+
+         });
+       
+    }
+   
+
+
+</script>
